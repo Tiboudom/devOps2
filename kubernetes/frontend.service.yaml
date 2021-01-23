@@ -24,7 +24,7 @@ spec:
             - name: REACT_APP_API_V1_ENDPOINT
               value: http://backend-service
             - name: TESTENV
-              value: cacaboudin
+              value: testingenv
 ---
 apiVersion: v1
 kind: Service
