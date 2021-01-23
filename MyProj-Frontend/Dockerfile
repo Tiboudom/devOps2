@@ -21,6 +21,7 @@ CMD ["yarn", "start"]
 
 # build environment
 FROM node:13.12.0-alpine as build
+
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
@@ -32,5 +33,6 @@ RUN yarn build
 # production environment
 FROM nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
+COPY nginx.conf /etc/nginx/
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]

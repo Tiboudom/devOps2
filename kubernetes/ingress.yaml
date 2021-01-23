@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: epi-devops-2
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/app-root: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.org/rewrites: "serviceName=frontend-service rewrite=/;serviceName=backend-service rewrite=/"
+spec:
+  rules:
+  - host: 34.89.224.164.xip.io
+    http:
+      paths:
+      - backend:
+          serviceName: frontend-service
+          servicePort: 80
+        path: /front/
+      - backend:
+          serviceName: backend-service
+          servicePort: 80
+        path: /api/

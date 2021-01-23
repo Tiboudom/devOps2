@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: epi-devops-2
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - image: gcr.io/epi-devops-2/backend:v4
+          name: backend
+          ports:
+            - containerPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: epi-devops-2
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8081

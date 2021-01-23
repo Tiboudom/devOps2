@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: epi-devops-2
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - image: gcr.io/epi-devops-2/frontend:v10
+          name: frontend
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: REACT_APP_API_V1_ENDPOINT
+              value: http://backend-service
+            - name: TESTENV
+              value: cacaboudin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: epi-devops-2
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
